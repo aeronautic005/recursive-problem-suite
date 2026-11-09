@@ -1,22 +1,45 @@
 public class RecursiveMathEngine {
+    public static final int MAX_FACTORIAL_LIMIT = 20; // 21! overflows 64-bit signed long
+    public static final int MAX_POWER_EXPONENT = 60;
 
     /**
-     * Pure recursive calculation of factorial: n! = n * (n-1)!
+     * Recursive calculation of factorial: n! = n * (n-1)!
+     * Validates input bounds and overflow risks.
      */
-    public static long factorial(int n) {
+    public static long factorial(int n) throws InvalidRecursionInputException, RecursionLimitExceededException {
+        if (n < 0) {
+            throw new InvalidRecursionInputException("n", n, "Factorial is undefined for negative numbers.");
+        }
+        if (n > MAX_FACTORIAL_LIMIT) {
+            throw new RecursionLimitExceededException(n, MAX_FACTORIAL_LIMIT, "factorial");
+        }
+        return computeFactorialInternal(n);
+    }
+
+    private static long computeFactorialInternal(int n) {
         if (n <= 1) {
             return 1;
         }
-        return n * factorial(n - 1);
+        return n * computeFactorialInternal(n - 1);
     }
 
     /**
-     * Pure recursive calculation of base^exp using exponent reduction.
+     * Recursive calculation of base^exp with input boundary guards.
      */
-    public static long power(int base, int exp) {
+    public static long power(int base, int exp) throws InvalidRecursionInputException, RecursionLimitExceededException {
+        if (exp < 0) {
+            throw new InvalidRecursionInputException("exp", exp, "Negative exponents not supported for integer power.");
+        }
+        if (exp > MAX_POWER_EXPONENT) {
+            throw new RecursionLimitExceededException(exp, MAX_POWER_EXPONENT, "power");
+        }
+        return computePowerInternal(base, exp);
+    }
+
+    private static long computePowerInternal(int base, int exp) {
         if (exp == 0) {
             return 1;
         }
-        return base * power(base, exp - 1);
+        return base * computePowerInternal(base, exp - 1);
     }
 }
