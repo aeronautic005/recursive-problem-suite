@@ -42,4 +42,16 @@ public class RecursiveMathEngine {
         }
         return base * computePowerInternal(base, exp - 1);
     }
+
+    /**
+     * Recursively calculates the sum of all digits of an integer:
+     * sumOfDigits(1234) = 4 + sumOfDigits(123) = 4 + 3 + 2 + 1 = 10.
+     */
+    public static int sumOfDigits(long number) {
+        long absNum = Math.abs(number);
+        if (absNum < 10) {
+            return (int) absNum;
+        }
+        return (int) (absNum % 10) + sumOfDigits(absNum / 10);
+    }
 }
