@@ -1,6 +1,7 @@
 public class RecursiveMathEngine {
     public static final int MAX_FACTORIAL_LIMIT = 20; // 21! overflows 64-bit signed long
     public static final int MAX_POWER_EXPONENT = 60;
+    public static final int MAX_PELL_LIMIT = 40;     // Beyond 40 naive recursion causes stack explosion
 
     /**
      * Recursive calculation of factorial: n! = n * (n-1)!
@@ -53,5 +54,25 @@ public class RecursiveMathEngine {
             return (int) absNum;
         }
         return (int) (absNum % 10) + sumOfDigits(absNum / 10);
+    }
+
+    /**
+     * Recursive calculation of Pell numbers:
+     * P(0) = 0, P(1) = 1, P(n) = 2*P(n-1) + P(n-2)
+     */
+    public static long calculatePell(int n) throws InvalidRecursionInputException, RecursionLimitExceededException {
+        if (n < 0) {
+            throw new InvalidRecursionInputException("n", n, "Pell sequence index cannot be negative.");
+        }
+        if (n > MAX_PELL_LIMIT) {
+            throw new RecursionLimitExceededException(n, MAX_PELL_LIMIT, "calculatePell");
+        }
+        return computePellInternal(n);
+    }
+
+    private static long computePellInternal(int n) {
+        if (n == 0) return 0;
+        if (n == 1) return 1;
+        return 2 * computePellInternal(n - 1) + computePellInternal(n - 2);
     }
 }
