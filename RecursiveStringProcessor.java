@@ -162,4 +162,59 @@ public class RecursiveStringProcessor {
         int isVowel = (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') ? 1 : 0;
         return isVowel + countVowelsInternal(str, index + 1);
     }
+
+    /**
+     * Pure recursive substring search to verify if pattern occurs within text.
+     *
+     * @param text string to search within
+     * @param pattern substring pattern to find
+     * @return true if pattern exists in text, false otherwise
+     * @throws RecursionLimitExceededException if text length exceeds safe limit
+     */
+    public static boolean containsSubstring(String text, String pattern)
+            throws RecursionLimitExceededException {
+        return indexOf(text, pattern) != -1;
+    }
+
+    /**
+     * Recursively finds the first index of pattern in text, or -1 if not found.
+     *
+     * @param text string to search within
+     * @param pattern substring pattern to find
+     * @return 0-based start index of pattern, or -1
+     * @throws RecursionLimitExceededException if text length exceeds safe limit
+     */
+    public static int indexOf(String text, String pattern) throws RecursionLimitExceededException {
+        if (text == null || pattern == null) {
+            return -1;
+        }
+        if (pattern.isEmpty()) {
+            return 0;
+        }
+        if (pattern.length() > text.length()) {
+            return -1;
+        }
+        validateStringDepth(text, MAX_RECURSION_STRING_LENGTH, "indexOf");
+        return findSubstringInternal(text, pattern, 0);
+    }
+
+    private static int findSubstringInternal(String text, String pattern, int textIndex) {
+        if (textIndex + pattern.length() > text.length()) {
+            return -1;
+        }
+        if (matchesPrefix(text, textIndex, pattern, 0)) {
+            return textIndex;
+        }
+        return findSubstringInternal(text, pattern, textIndex + 1);
+    }
+
+    private static boolean matchesPrefix(String text, int textIdx, String pattern, int patternIdx) {
+        if (patternIdx >= pattern.length()) {
+            return true;
+        }
+        if (text.charAt(textIdx) != pattern.charAt(patternIdx)) {
+            return false;
+        }
+        return matchesPrefix(text, textIdx + 1, pattern, patternIdx + 1);
+    }
 }
