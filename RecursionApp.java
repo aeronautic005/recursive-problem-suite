@@ -9,12 +9,12 @@ public class RecursionApp {
         boolean running = true;
         System.out.println("=================================================");
         System.out.println("    RECURSIVE ALGORITHM SUITE & MAZE SOLVER     ");
-        System.out.println("      [MILESTONES 1, 2 & 3 - PATHFINDER]         ");
+        System.out.println("      [MILESTONES 1, 2 & 3 - ALL VERIFIED]       ");
         System.out.println("=================================================");
 
         while (running) {
             printMenu();
-            System.out.print("Enter your choice (1-6): ");
+            System.out.print("Enter your choice (1-7): ");
             int choice = readIntChoice();
 
             switch (choice) {
@@ -34,11 +34,14 @@ public class RecursionApp {
                     runMilestoneTwoAutomatedTests();
                     break;
                 case 6:
+                    runMilestoneThreeAutomatedTests();
+                    break;
+                case 7:
                     running = false;
                     System.out.println("\nExiting Recursive Suite. Happy problem solving!");
                     break;
                 default:
-                    System.out.println("[ERROR] Invalid choice. Select 1 through 6.");
+                    System.out.println("[ERROR] Invalid choice. Select 1 through 7.");
             }
             System.out.println();
         }
@@ -53,7 +56,8 @@ public class RecursionApp {
         System.out.println("3. Interactive 2D Maze Recursive Pathfinder");
         System.out.println("4. Run Milestone 1 Tests (Math Engine)");
         System.out.println("5. Run Milestone 2 Tests (String Engine)");
-        System.out.println("6. Exit");
+        System.out.println("6. Run Milestone 3 Tests (Maze Pathfinder)");
+        System.out.println("7. Exit");
         System.out.println("-------------------------------------------------");
     }
 
@@ -404,6 +408,92 @@ public class RecursionApp {
 
         System.out.println("=================================================");
         System.out.println("       MILESTONE 2 VERIFICATION COMPLETED!       ");
+        System.out.println("=================================================");
+    }
+
+    private static void runMilestoneThreeAutomatedTests() {
+        System.out.println("\n=================================================");
+        System.out.println("   MILESTONE 3 AUTOMATED TESTS & VERIFIERS       ");
+        System.out.println("=================================================");
+
+        // Test 1: Solvability on Sample 5x5 Maze
+        try {
+            MazeGrid sample = MazeGrid.createSampleMaze();
+            boolean solved = RecursiveMazeSolver.solve(sample);
+            System.out.printf("[Test 1] 5x5 Maze Path Discovery: %b -> %s%n",
+                    solved, (solved ? "PASS" : "FAIL"));
+        } catch (Exception e) {
+            System.out.println("[Test 1] FAIL: " + e.getMessage());
+        }
+
+        // Test 2: Solvability on Challenging 7x7 Labyrinth
+        try {
+            MazeGrid chal = MazeGrid.createChallengingMaze();
+            boolean solved = RecursiveMazeSolver.solve(chal);
+            System.out.printf("[Test 2] 7x7 Complex Labyrinth Discovery: %b -> %s%n",
+                    solved, (solved ? "PASS" : "FAIL"));
+        } catch (Exception e) {
+            System.out.println("[Test 2] FAIL: " + e.getMessage());
+        }
+
+        // Test 3: Unsolvable Enclosed Maze Correct Backtracking Failure
+        try {
+            MazeGrid unsolvable = MazeGrid.createUnsolvableMaze();
+            boolean solved = RecursiveMazeSolver.solve(unsolvable);
+            boolean pass = (!solved);
+            System.out.printf("[Test 3] Blocked Maze Backtracking (expect false): %b -> %s%n",
+                    solved, (pass ? "PASS" : "FAIL"));
+        } catch (Exception e) {
+            System.out.println("[Test 3] FAIL: " + e.getMessage());
+        }
+
+        // Test 4: Coordinate List Integrity & Start/Exit Anchors
+        try {
+            MazeGrid sample = MazeGrid.createSampleMaze();
+            List<MazeCoordinate> path = RecursiveMazeSolver.findPath(sample);
+            boolean pass = !path.isEmpty()
+                    && path.get(0).equals(new MazeCoordinate(0, 0))
+                    && path.get(path.size() - 1).equals(new MazeCoordinate(4, 4));
+            System.out.printf("[Test 4] Path Coordinates (Length: %d, Start: %s, Exit: %s) -> %s%n",
+                    path.size(), (path.isEmpty() ? "N/A" : path.get(0)),
+                    (path.isEmpty() ? "N/A" : path.get(path.size() - 1)),
+                    (pass ? "PASS" : "FAIL"));
+        } catch (Exception e) {
+            System.out.println("[Test 4] FAIL: " + e.getMessage());
+        }
+
+        // Test 5: Distinct Paths Count on Simple Fork
+        try {
+            MazeGrid forkGrid = new MazeGrid(new String[] {
+                "S..",
+                "...",
+                "..E"
+            });
+            int paths = RecursiveMazeSolver.countAllPaths(forkGrid);
+            boolean pass = (paths >= 2); // 3x3 open grid has multiple valid simple paths
+            System.out.printf("[Test 5] Recursive All-Paths Counting on 3x3 (found %d paths): -> %s%n",
+                    paths, (pass ? "PASS" : "FAIL"));
+        } catch (Exception e) {
+            System.out.println("[Test 5] FAIL: " + e.getMessage());
+        }
+
+        // Test 6: Missing Start Structure Exception
+        System.out.print("[Test 6] Malformed maze exception guard (No Start): ");
+        try {
+            MazeGrid noStart = new MazeGrid(new String[] {
+                "...",
+                "..E"
+            });
+            RecursiveMazeSolver.solve(noStart);
+            System.out.println("FAIL (No exception thrown)");
+        } catch (InvalidRecursionInputException e) {
+            System.out.println("PASS -> Caught: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("FAIL with unexpected: " + e.getMessage());
+        }
+
+        System.out.println("=================================================");
+        System.out.println("       MILESTONE 3 VERIFICATION COMPLETED!       ");
         System.out.println("=================================================");
     }
 
