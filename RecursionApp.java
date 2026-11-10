@@ -9,7 +9,7 @@ public class RecursionApp {
         boolean running = true;
         System.out.println("=================================================");
         System.out.println("    RECURSIVE ALGORITHM SUITE & MAZE SOLVER     ");
-        System.out.println("        [MILESTONE 1 & 2 - VERIFIED]             ");
+        System.out.println("      [MILESTONES 1, 2 & 3 - PATHFINDER]         ");
         System.out.println("=================================================");
 
         while (running) {
@@ -25,13 +25,13 @@ public class RecursionApp {
                     runInteractiveStringMenu();
                     break;
                 case 3:
-                    runMilestoneOneAutomatedTests();
+                    runInteractiveMazeMenu();
                     break;
                 case 4:
-                    runMilestoneTwoAutomatedTests();
+                    runMilestoneOneAutomatedTests();
                     break;
                 case 5:
-                    System.out.println("\n[NOTICE] Milestone 3 (2D Maze Backtracking Pathfinder) is next in queue!");
+                    runMilestoneTwoAutomatedTests();
                     break;
                 case 6:
                     running = false;
@@ -50,9 +50,9 @@ public class RecursionApp {
         System.out.println("----------------- MAIN MENU ---------------------");
         System.out.println("1. Interactive Recursive Math Calculator");
         System.out.println("2. Interactive Recursive String & Palindrome Engine");
-        System.out.println("3. Run Milestone 1 Automated Tests (Math Engine)");
-        System.out.println("4. Run Milestone 2 Automated Tests (String Engine)");
-        System.out.println("5. 2D Maze Pathfinder (Coming in Milestone 3)");
+        System.out.println("3. Interactive 2D Maze Recursive Pathfinder");
+        System.out.println("4. Run Milestone 1 Tests (Math Engine)");
+        System.out.println("5. Run Milestone 2 Tests (String Engine)");
         System.out.println("6. Exit");
         System.out.println("-------------------------------------------------");
     }
@@ -183,6 +183,65 @@ public class RecursionApp {
         } catch (RecursionLimitExceededException e) {
             System.out.println("\n[CAUGHT RecursionLimitExceededException]: " + e.getMessage());
             System.out.printf("  Depth: %d | Limit: %d%n", e.getRequestedDepth(), e.getMaxPermissibleDepth());
+        }
+    }
+
+    private static void runInteractiveMazeMenu() {
+        System.out.println("\n--- 2D MAZE RECURSIVE BACKTRACKING PATHFINDER ---");
+        System.out.println("1. Solve Sample 5x5 Maze");
+        System.out.println("2. Solve Challenging 7x7 Labyrinth");
+        System.out.println("3. Test Unsolvable Enclosed Maze");
+        System.out.println("4. Trace Step-by-Step Coordinates");
+        System.out.println("5. Count Total Distinct Feasible Paths");
+        System.out.print("Select operation (1-5): ");
+        int op = readIntChoice();
+
+        try {
+            MazeGrid maze;
+            switch (op) {
+                case 1:
+                    maze = MazeGrid.createSampleMaze();
+                    System.out.println("\n[INITIAL MAZE]:\n" + maze.render());
+                    boolean solvedSample = RecursiveMazeSolver.solve(maze);
+                    System.out.println("[SOLVED RESULT]: " + (solvedSample ? "PATH FOUND (* = path, x = visited/backtracked)" : "NO PATH FOUND"));
+                    System.out.println(maze.render());
+                    break;
+                case 2:
+                    maze = MazeGrid.createChallengingMaze();
+                    System.out.println("\n[INITIAL LABYRINTH]:\n" + maze.render());
+                    boolean solvedChallenging = RecursiveMazeSolver.solve(maze);
+                    System.out.println("[SOLVED RESULT]: " + (solvedChallenging ? "PATH FOUND (* = path, x = visited/backtracked)" : "NO PATH FOUND"));
+                    System.out.println(maze.render());
+                    break;
+                case 3:
+                    maze = MazeGrid.createUnsolvableMaze();
+                    System.out.println("\n[INITIAL UNSOLVABLE MAZE]:\n" + maze.render());
+                    boolean solvedUnsolvable = RecursiveMazeSolver.solve(maze);
+                    System.out.println("[SOLVED RESULT]: " + (solvedUnsolvable ? "PATH FOUND" : "NO PATH FOUND (Correctly verified by backtracking!)"));
+                    System.out.println(maze.render());
+                    break;
+                case 4:
+                    maze = MazeGrid.createSampleMaze();
+                    List<MazeCoordinate> path = RecursiveMazeSolver.findPath(maze);
+                    System.out.println("\n[START TO EXIT COORDINATES]:");
+                    if (path.isEmpty()) {
+                        System.out.println("No coordinates found.");
+                    } else {
+                        for (int i = 0; i < path.size(); i++) {
+                            System.out.printf("  Step %2d: %s%n", (i + 1), path.get(i));
+                        }
+                    }
+                    break;
+                case 5:
+                    maze = MazeGrid.createSampleMaze();
+                    int totalPaths = RecursiveMazeSolver.countAllPaths(maze);
+                    System.out.printf("\n[RESULT] Total distinct non-revisiting paths to exit: %d%n", totalPaths);
+                    break;
+                default:
+                    System.out.println("[ERROR] Invalid operation.");
+            }
+        } catch (Exception e) {
+            System.out.println("[ERROR during maze solving]: " + e.getMessage());
         }
     }
 
