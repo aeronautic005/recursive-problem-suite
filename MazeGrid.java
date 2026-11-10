@@ -107,4 +107,78 @@ public class MazeGrid {
         }
         return new MazeGrid(copy);
     }
+
+    public String render() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("   ");
+        for (int c = 0; c < cols; c++) {
+            sb.append(String.format(" %d ", c));
+        }
+        sb.append("\n  +");
+        for (int c = 0; c < cols; c++) {
+            sb.append("---");
+        }
+        sb.append("+\n");
+
+        for (int r = 0; r < rows; r++) {
+            sb.append(String.format("%d |", r));
+            for (int c = 0; c < cols; c++) {
+                sb.append(" ").append(grid[r][c]).append(" ");
+            }
+            sb.append("|\n");
+        }
+
+        sb.append("  +");
+        for (int c = 0; c < cols; c++) {
+            sb.append("---");
+        }
+        sb.append("+\n");
+        return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        return render();
+    }
+
+    /**
+     * Standard 5x5 solvable maze with branching paths and dead-ends.
+     */
+    public static MazeGrid createSampleMaze() {
+        return new MazeGrid(new String[] {
+            "S...#",
+            "#.##.",
+            "#....",
+            "###.#",
+            "#...E"
+        });
+    }
+
+    /**
+     * Complex 7x7 labyrinth requiring deep backtracking.
+     */
+    public static MazeGrid createChallengingMaze() {
+        return new MazeGrid(new String[] {
+            "S.#....",
+            "..#..#.",
+            "#.#.##.",
+            "#.#....",
+            "#.####.",
+            "#.....#",
+            "#####.E"
+        });
+    }
+
+    /**
+     * Maze with the exit enclosed by walls to test backtracking exhaustiveness.
+     */
+    public static MazeGrid createUnsolvableMaze() {
+        return new MazeGrid(new String[] {
+            "S....",
+            "#####",
+            "#...#",
+            "#.###",
+            "#..#E"
+        });
+    }
 }
