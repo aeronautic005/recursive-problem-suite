@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class RecursiveStringProcessor {
     public static final int MAX_RECURSION_STRING_LENGTH = 1000;
     public static final int MAX_PERMUTATION_STRING_LENGTH = 8;
@@ -216,5 +219,38 @@ public class RecursiveStringProcessor {
             return false;
         }
         return matchesPrefix(text, textIdx + 1, pattern, patternIdx + 1);
+    }
+
+    /**
+     * Generates all permutations of a string recursively.
+     * Input length is capped by MAX_PERMUTATION_STRING_LENGTH to prevent memory exhaustion.
+     *
+     * @param str input string
+     * @return list of distinct and ordered permutations
+     * @throws RecursionLimitExceededException if input string exceeds permutation threshold
+     */
+    public static List<String> generatePermutations(String str) throws RecursionLimitExceededException {
+        if (str == null) {
+            return new ArrayList<>();
+        }
+        validateStringDepth(str, MAX_PERMUTATION_STRING_LENGTH, "generatePermutations");
+        List<String> results = new ArrayList<>();
+        generatePermutationsInternal("", str, results);
+        return results;
+    }
+
+    private static void generatePermutationsInternal(String prefix, String remaining, List<String> results) {
+        int n = remaining.length();
+        if (n == 0) {
+            results.add(prefix);
+            return;
+        }
+        for (int i = 0; i < n; i++) {
+            generatePermutationsInternal(
+                prefix + remaining.charAt(i),
+                remaining.substring(0, i) + remaining.substring(i + 1, n),
+                results
+            );
+        }
     }
 }
