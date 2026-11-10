@@ -109,4 +109,57 @@ public class RecursiveStringProcessor {
         }
         return checkPalindromeNormalizedInternal(str, left + 1, right - 1);
     }
+
+    /**
+     * Recursively counts occurrences of a specific character in a string.
+     *
+     * @param str input string
+     * @param target character to search for
+     * @param caseSensitive whether to match case exactly
+     * @return count of occurrences
+     * @throws RecursionLimitExceededException if length exceeds safe limit
+     */
+    public static int countOccurrences(String str, char target, boolean caseSensitive)
+            throws RecursionLimitExceededException {
+        if (str == null || str.isEmpty()) {
+            return 0;
+        }
+        validateStringDepth(str, MAX_RECURSION_STRING_LENGTH, "countOccurrences");
+        return countOccurrencesInternal(str, target, caseSensitive, 0);
+    }
+
+    private static int countOccurrencesInternal(String str, char target, boolean caseSensitive, int index) {
+        if (index >= str.length()) {
+            return 0;
+        }
+        char current = str.charAt(index);
+        boolean matches = caseSensitive ? (current == target)
+                : (Character.toLowerCase(current) == Character.toLowerCase(target));
+        int matchCount = matches ? 1 : 0;
+        return matchCount + countOccurrencesInternal(str, target, caseSensitive, index + 1);
+    }
+
+    /**
+     * Recursively counts total vowel characters (a, e, i, o, u) in a string.
+     *
+     * @param str input string
+     * @return count of vowels
+     * @throws RecursionLimitExceededException if length exceeds safe limit
+     */
+    public static int countVowels(String str) throws RecursionLimitExceededException {
+        if (str == null || str.isEmpty()) {
+            return 0;
+        }
+        validateStringDepth(str, MAX_RECURSION_STRING_LENGTH, "countVowels");
+        return countVowelsInternal(str, 0);
+    }
+
+    private static int countVowelsInternal(String str, int index) {
+        if (index >= str.length()) {
+            return 0;
+        }
+        char c = Character.toLowerCase(str.charAt(index));
+        int isVowel = (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') ? 1 : 0;
+        return isVowel + countVowelsInternal(str, index + 1);
+    }
 }
