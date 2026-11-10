@@ -42,4 +42,71 @@ public class RecursiveStringProcessor {
         }
         return reverseInternal(str.substring(1)) + str.charAt(0);
     }
+
+    /**
+     * Standard recursive palindrome check ignoring case and non-alphanumeric symbols.
+     *
+     * @param str input string
+     * @return true if palindrome, false otherwise
+     * @throws RecursionLimitExceededException if length exceeds safe limit
+     */
+    public static boolean isPalindrome(String str) throws RecursionLimitExceededException {
+        return isPalindromeNormalized(str);
+    }
+
+    /**
+     * Recursively checks if a string is a palindrome strictly (exact character match).
+     *
+     * @param str input string
+     * @return true if palindrome strictly
+     * @throws RecursionLimitExceededException if length exceeds safe limit
+     */
+    public static boolean isPalindromeStrict(String str) throws RecursionLimitExceededException {
+        if (str == null) return false;
+        validateStringDepth(str, MAX_RECURSION_STRING_LENGTH, "isPalindromeStrict");
+        return checkPalindromeStrictInternal(str, 0, str.length() - 1);
+    }
+
+    private static boolean checkPalindromeStrictInternal(String str, int left, int right) {
+        if (left >= right) {
+            return true;
+        }
+        if (str.charAt(left) != str.charAt(right)) {
+            return false;
+        }
+        return checkPalindromeStrictInternal(str, left + 1, right - 1);
+    }
+
+    /**
+     * Recursively checks if a string is a palindrome normalized
+     * (skipping non-alphanumeric characters and case differences).
+     *
+     * @param str input string
+     * @return true if normalized palindrome
+     * @throws RecursionLimitExceededException if length exceeds safe limit
+     */
+    public static boolean isPalindromeNormalized(String str) throws RecursionLimitExceededException {
+        if (str == null) return false;
+        validateStringDepth(str, MAX_RECURSION_STRING_LENGTH, "isPalindromeNormalized");
+        return checkPalindromeNormalizedInternal(str, 0, str.length() - 1);
+    }
+
+    private static boolean checkPalindromeNormalizedInternal(String str, int left, int right) {
+        if (left >= right) {
+            return true;
+        }
+        char leftChar = str.charAt(left);
+        char rightChar = str.charAt(right);
+
+        if (!Character.isLetterOrDigit(leftChar)) {
+            return checkPalindromeNormalizedInternal(str, left + 1, right);
+        }
+        if (!Character.isLetterOrDigit(rightChar)) {
+            return checkPalindromeNormalizedInternal(str, left, right - 1);
+        }
+        if (Character.toLowerCase(leftChar) != Character.toLowerCase(rightChar)) {
+            return false;
+        }
+        return checkPalindromeNormalizedInternal(str, left + 1, right - 1);
+    }
 }
