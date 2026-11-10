@@ -253,4 +253,32 @@ public class RecursiveStringProcessor {
             );
         }
     }
+
+    /**
+     * Recursively generates all 2^n subsequences (combinations) of the characters in a string.
+     *
+     * @param str input string
+     * @return list of all subsequences including the empty string
+     * @throws RecursionLimitExceededException if string length exceeds safe subsequence limit
+     */
+    public static List<String> generateSubsequences(String str) throws RecursionLimitExceededException {
+        if (str == null) {
+            return new ArrayList<>();
+        }
+        validateStringDepth(str, MAX_SUBSEQUENCE_STRING_LENGTH, "generateSubsequences");
+        List<String> results = new ArrayList<>();
+        generateSubsequencesInternal(str, 0, "", results);
+        return results;
+    }
+
+    private static void generateSubsequencesInternal(String str, int index, String current, List<String> results) {
+        if (index == str.length()) {
+            results.add(current);
+            return;
+        }
+        // Branch 1: Exclude character at current index
+        generateSubsequencesInternal(str, index + 1, current, results);
+        // Branch 2: Include character at current index
+        generateSubsequencesInternal(str, index + 1, current + str.charAt(index), results);
+    }
 }
