@@ -9,12 +9,12 @@ public class RecursionApp {
         boolean running = true;
         System.out.println("=================================================");
         System.out.println("    RECURSIVE ALGORITHM SUITE & MAZE SOLVER     ");
-        System.out.println("        [MILESTONE 1 & 2 - DUAL ENGINES]         ");
+        System.out.println("        [MILESTONE 1 & 2 - VERIFIED]             ");
         System.out.println("=================================================");
 
         while (running) {
             printMenu();
-            System.out.print("Enter your choice (1-5): ");
+            System.out.print("Enter your choice (1-6): ");
             int choice = readIntChoice();
 
             switch (choice) {
@@ -28,14 +28,17 @@ public class RecursionApp {
                     runMilestoneOneAutomatedTests();
                     break;
                 case 4:
-                    System.out.println("\n[NOTICE] Milestone 3 (2D Maze Backtracking Pathfinder) is next in queue!");
+                    runMilestoneTwoAutomatedTests();
                     break;
                 case 5:
+                    System.out.println("\n[NOTICE] Milestone 3 (2D Maze Backtracking Pathfinder) is next in queue!");
+                    break;
+                case 6:
                     running = false;
                     System.out.println("\nExiting Recursive Suite. Happy problem solving!");
                     break;
                 default:
-                    System.out.println("[ERROR] Invalid choice. Select 1 through 5.");
+                    System.out.println("[ERROR] Invalid choice. Select 1 through 6.");
             }
             System.out.println();
         }
@@ -47,9 +50,10 @@ public class RecursionApp {
         System.out.println("----------------- MAIN MENU ---------------------");
         System.out.println("1. Interactive Recursive Math Calculator");
         System.out.println("2. Interactive Recursive String & Palindrome Engine");
-        System.out.println("3. Run Automated Tests & Verifiers");
-        System.out.println("4. 2D Maze Pathfinder (Coming in Milestone 3)");
-        System.out.println("5. Exit");
+        System.out.println("3. Run Milestone 1 Automated Tests (Math Engine)");
+        System.out.println("4. Run Milestone 2 Automated Tests (String Engine)");
+        System.out.println("5. 2D Maze Pathfinder (Coming in Milestone 3)");
+        System.out.println("6. Exit");
         System.out.println("-------------------------------------------------");
     }
 
@@ -239,6 +243,108 @@ public class RecursionApp {
 
         System.out.println("=================================================");
         System.out.println("       MILESTONE 1 VERIFICATION COMPLETED!       ");
+        System.out.println("=================================================");
+    }
+
+    private static void runMilestoneTwoAutomatedTests() {
+        System.out.println("\n=================================================");
+        System.out.println("   MILESTONE 2 AUTOMATED TESTS & VERIFIERS       ");
+        System.out.println("=================================================");
+
+        // Test 1: Recursive String Reversal
+        try {
+            String reversed = RecursiveStringProcessor.reverse("recursion");
+            boolean pass = "noisrucer".equals(reversed);
+            System.out.printf("[Test 1] Reverse (\"recursion\" -> \"noisrucer\"): %s -> %s%n",
+                    reversed, (pass ? "PASS" : "FAIL"));
+        } catch (Exception e) {
+            System.out.println("[Test 1] FAIL: " + e.getMessage());
+        }
+
+        // Test 2: Palindrome Strict Check
+        try {
+            boolean p1 = RecursiveStringProcessor.isPalindromeStrict("racecar");
+            boolean p2 = RecursiveStringProcessor.isPalindromeStrict("hello");
+            boolean pass = p1 && !p2;
+            System.out.printf("[Test 2] Palindrome Strict (\"racecar\"=true, \"hello\"=false): -> %s%n",
+                    (pass ? "PASS" : "FAIL"));
+        } catch (Exception e) {
+            System.out.println("[Test 2] FAIL: " + e.getMessage());
+        }
+
+        // Test 3: Palindrome Normalized Check (Mixed Case & Punctuation)
+        try {
+            String phrase = "A man, a plan, a canal: Panama";
+            boolean pass = RecursiveStringProcessor.isPalindromeNormalized(phrase);
+            System.out.printf("[Test 3] Palindrome Normalized (\"%s\"): -> %s%n",
+                    phrase, (pass ? "PASS" : "FAIL"));
+        } catch (Exception e) {
+            System.out.println("[Test 3] FAIL: " + e.getMessage());
+        }
+
+        // Test 4: Recursive Character Count
+        try {
+            int count = RecursiveStringProcessor.countOccurrences("Object Oriented Programming", 'o', false);
+            boolean pass = (count == 3);
+            System.out.printf("[Test 4] Count occurrences of 'o' in OOP title (expect 3): %d -> %s%n",
+                    count, (pass ? "PASS" : "FAIL"));
+        } catch (Exception e) {
+            System.out.println("[Test 4] FAIL: " + e.getMessage());
+        }
+
+        // Test 5: Recursive Vowel Count
+        try {
+            int vowels = RecursiveStringProcessor.countVowels("Hello World");
+            boolean pass = (vowels == 3);
+            System.out.printf("[Test 5] Vowel Count in \"Hello World\" (expect 3): %d -> %s%n",
+                    vowels, (pass ? "PASS" : "FAIL"));
+        } catch (Exception e) {
+            System.out.println("[Test 5] FAIL: " + e.getMessage());
+        }
+
+        // Test 6: Recursive Substring Search
+        try {
+            int idx = RecursiveStringProcessor.indexOf("recursive pattern matching", "pattern");
+            boolean pass = (idx == 10);
+            System.out.printf("[Test 6] Substring search for \"pattern\" (expect idx 10): %d -> %s%n",
+                    idx, (pass ? "PASS" : "FAIL"));
+        } catch (Exception e) {
+            System.out.println("[Test 6] FAIL: " + e.getMessage());
+        }
+
+        // Test 7: Recursive Permutations
+        try {
+            List<String> perms = RecursiveStringProcessor.generatePermutations("abc");
+            boolean pass = (perms.size() == 6 && perms.contains("abc") && perms.contains("cba"));
+            System.out.printf("[Test 7] Permutations of \"abc\" (3! = 6 elements): %d generated -> %s%n",
+                    perms.size(), (pass ? "PASS" : "FAIL"));
+        } catch (Exception e) {
+            System.out.println("[Test 7] FAIL: " + e.getMessage());
+        }
+
+        // Test 8: Recursive Subsequences
+        try {
+            List<String> subs = RecursiveStringProcessor.generateSubsequences("xyz");
+            boolean pass = (subs.size() == 8 && subs.contains("") && subs.contains("xyz"));
+            System.out.printf("[Test 8] Subsequences of \"xyz\" (2^3 = 8 elements): %d generated -> %s%n",
+                    subs.size(), (pass ? "PASS" : "FAIL"));
+        } catch (Exception e) {
+            System.out.println("[Test 8] FAIL: " + e.getMessage());
+        }
+
+        // Test 9: Stack safeguard on excessive permutation length
+        System.out.print("[Test 9] Safeguard on 9-character permutation: ");
+        try {
+            RecursiveStringProcessor.generatePermutations("123456789");
+            System.out.println("FAIL (No exception thrown)");
+        } catch (RecursionLimitExceededException e) {
+            System.out.println("PASS -> Caught expected guard: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("FAIL: " + e.getMessage());
+        }
+
+        System.out.println("=================================================");
+        System.out.println("       MILESTONE 2 VERIFICATION COMPLETED!       ");
         System.out.println("=================================================");
     }
 
