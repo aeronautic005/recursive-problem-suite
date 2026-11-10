@@ -132,4 +132,48 @@ public class RecursiveMazeSolver {
         path.remove(path.size() - 1);
         return false;
     }
+
+    /**
+     * Recursively counts all feasible non-cyclic paths from Start to Exit.
+     * Uses complete backtracking state restoration.
+     *
+     * @param maze the maze grid to inspect
+     * @return total count of unique paths from start to exit
+     * @throws InvalidRecursionInputException if maze structure is invalid
+     * @throws RecursionLimitExceededException if exploration steps exceed safety limit
+     */
+    public static int countAllPaths(MazeGrid maze)
+            throws InvalidRecursionInputException, RecursionLimitExceededException {
+        validateMazeStructure(maze);
+        boolean[][] visited = new boolean[maze.getRows()][maze.getCols()];
+        int[] stepCounter = new int[] {0};
+
+        return countPathsInternal(maze, maze.getStartPos(), visited, stepCounter);
+    }
+
+    private static int countPathsInternal(MazeGrid maze, MazeCoordinate curr, boolean[][] visited, int[] steps)
+            throws RecursionLimitExceededException {
+        steps[0]++;
+        if (steps[0] > MAX_EXPLORATION_STEPS) {
+            throw new RecursionLimitExceededException(steps[0], MAX_EXPLORATION_STEPS, "countAllPaths");
+        }
+
+        if (curr.equals(maze.getExitPos())) {
+            return 1;
+        }
+
+        visited[curr.getRow()][curr.getCol()] = true;
+        int totalPaths = 0;
+
+        for (int[] dir : DIRECTIONS) {
+            MazeCoordinate next = curr.offset(dir[0], dir[1]);
+            if (maze.isInBounds(next) && maze.isWalkable(next) && !visited[next.getRow()][next.getCol()]) {
+                totalPaths += countPathsInternal(maze, next, visited, steps);
+            }
+        }
+
+        // Backtrack: unmark visited to allow other distinct paths to traverse this cell
+        visited[curr.getRow()][curr.getCol()] = false;
+        return totalPaths;
+    }
 }
