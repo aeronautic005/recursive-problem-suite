@@ -1,4 +1,5 @@
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class RecursionApp {
@@ -8,12 +9,12 @@ public class RecursionApp {
         boolean running = true;
         System.out.println("=================================================");
         System.out.println("    RECURSIVE ALGORITHM SUITE & MAZE SOLVER     ");
-        System.out.println("          [MILESTONE 1 - CORE ENGINE]            ");
+        System.out.println("        [MILESTONE 1 & 2 - DUAL ENGINES]         ");
         System.out.println("=================================================");
 
         while (running) {
             printMenu();
-            System.out.print("Enter your choice (1-4): ");
+            System.out.print("Enter your choice (1-5): ");
             int choice = readIntChoice();
 
             switch (choice) {
@@ -21,17 +22,20 @@ public class RecursionApp {
                     runInteractiveMathMenu();
                     break;
                 case 2:
-                    runMilestoneOneAutomatedTests();
+                    runInteractiveStringMenu();
                     break;
                 case 3:
-                    System.out.println("\n[NOTICE] Milestone 2 & 3 (Recursive Maze Pathfinder & Palindromes) are in active development!");
+                    runMilestoneOneAutomatedTests();
                     break;
                 case 4:
+                    System.out.println("\n[NOTICE] Milestone 3 (2D Maze Backtracking Pathfinder) is next in queue!");
+                    break;
+                case 5:
                     running = false;
                     System.out.println("\nExiting Recursive Suite. Happy problem solving!");
                     break;
                 default:
-                    System.out.println("[ERROR] Invalid choice. Select 1 through 4.");
+                    System.out.println("[ERROR] Invalid choice. Select 1 through 5.");
             }
             System.out.println();
         }
@@ -42,9 +46,10 @@ public class RecursionApp {
     private static void printMenu() {
         System.out.println("----------------- MAIN MENU ---------------------");
         System.out.println("1. Interactive Recursive Math Calculator");
-        System.out.println("2. Run Milestone 1 Automated Tests & Exception Verification");
-        System.out.println("3. 2D Maze Pathfinder (Coming in Milestone 2)");
-        System.out.println("4. Exit");
+        System.out.println("2. Interactive Recursive String & Palindrome Engine");
+        System.out.println("3. Run Automated Tests & Verifiers");
+        System.out.println("4. 2D Maze Pathfinder (Coming in Milestone 3)");
+        System.out.println("5. Exit");
         System.out.println("-------------------------------------------------");
     }
 
@@ -93,11 +98,87 @@ public class RecursionApp {
             System.out.println("\n[CAUGHT InvalidRecursionInputException]: " + e.getMessage());
         } catch (RecursionLimitExceededException e) {
             System.out.println("\n[CAUGHT RecursionLimitExceededException]: " + e.getMessage());
-            System.out.printf("  Call Depth: %d | Max Safe Permissible: %d%n", 
-                e.getRequestedDepth(), e.getMaxPermissibleDepth());
+            System.out.printf("  Call Depth: %d | Max Safe Permissible: %d%n",
+                    e.getRequestedDepth(), e.getMaxPermissibleDepth());
         } catch (InputMismatchException e) {
             scanner.nextLine();
             System.out.println("[ERROR] Invalid numeric input.");
+        }
+    }
+
+    private static void runInteractiveStringMenu() {
+        System.out.println("\n--- RECURSIVE STRING & PALINDROME OPERATIONS ---");
+        System.out.println("1. Reverse String");
+        System.out.println("2. Palindrome Check (Strict & Normalized)");
+        System.out.println("3. Count Specific Character Occurrences");
+        System.out.println("4. Count Total Vowels");
+        System.out.println("5. Recursive Substring Search");
+        System.out.println("6. Generate All String Permutations");
+        System.out.println("7. Generate All Subsequences (Combinations)");
+        System.out.print("Select operation (1-7): ");
+        int op = readIntChoice();
+
+        try {
+            switch (op) {
+                case 1:
+                    System.out.print("Enter string to reverse: ");
+                    String sRev = scanner.nextLine();
+                    String reversed = RecursiveStringProcessor.reverse(sRev);
+                    System.out.printf("[RESULT] Reversed: \"%s\"%n", reversed);
+                    break;
+                case 2:
+                    System.out.print("Enter text to verify palindrome: ");
+                    String sPal = scanner.nextLine();
+                    boolean strict = RecursiveStringProcessor.isPalindromeStrict(sPal);
+                    boolean norm = RecursiveStringProcessor.isPalindromeNormalized(sPal);
+                    System.out.printf("[RESULT] Strict Palindrome: %b | Normalized Palindrome: %b%n", strict, norm);
+                    break;
+                case 3:
+                    System.out.print("Enter text: ");
+                    String sCount = scanner.nextLine();
+                    System.out.print("Enter character to count: ");
+                    String charInput = scanner.nextLine();
+                    if (!charInput.isEmpty()) {
+                        char targetChar = charInput.charAt(0);
+                        int occ = RecursiveStringProcessor.countOccurrences(sCount, targetChar, false);
+                        System.out.printf("[RESULT] Occurrences of '%c' (case-insensitive): %d%n", targetChar, occ);
+                    }
+                    break;
+                case 4:
+                    System.out.print("Enter text to count vowels: ");
+                    String sVowel = scanner.nextLine();
+                    int vowels = RecursiveStringProcessor.countVowels(sVowel);
+                    System.out.printf("[RESULT] Total vowels: %d%n", vowels);
+                    break;
+                case 5:
+                    System.out.print("Enter main text: ");
+                    String text = scanner.nextLine();
+                    System.out.print("Enter substring pattern to search: ");
+                    String pattern = scanner.nextLine();
+                    int idx = RecursiveStringProcessor.indexOf(text, pattern);
+                    System.out.printf("[RESULT] Pattern %s in text (first index: %d)%n",
+                            (idx != -1 ? "FOUND" : "NOT FOUND"), idx);
+                    break;
+                case 6:
+                    System.out.print("Enter short string for permutations (<= 8 chars): ");
+                    String sPerm = scanner.nextLine();
+                    List<String> perms = RecursiveStringProcessor.generatePermutations(sPerm);
+                    System.out.printf("[RESULT] Total permutations: %d%n", perms.size());
+                    System.out.println("  Permutations: " + perms);
+                    break;
+                case 7:
+                    System.out.print("Enter short string for subsequences (<= 15 chars): ");
+                    String sSub = scanner.nextLine();
+                    List<String> subs = RecursiveStringProcessor.generateSubsequences(sSub);
+                    System.out.printf("[RESULT] Total subsequences (2^n): %d%n", subs.size());
+                    System.out.println("  Subsequences: " + subs);
+                    break;
+                default:
+                    System.out.println("[ERROR] Invalid operation.");
+            }
+        } catch (RecursionLimitExceededException e) {
+            System.out.println("\n[CAUGHT RecursionLimitExceededException]: " + e.getMessage());
+            System.out.printf("  Depth: %d | Limit: %d%n", e.getRequestedDepth(), e.getMaxPermissibleDepth());
         }
     }
 
