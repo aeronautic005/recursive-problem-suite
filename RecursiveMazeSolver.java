@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class RecursiveMazeSolver {
     public static final int MAX_EXPLORATION_STEPS = 10000;
 
@@ -79,6 +82,54 @@ public class RecursiveMazeSolver {
         if (!curr.equals(maze.getStartPos())) {
             maze.setCell(curr, MazeGrid.VISITED);
         }
+        return false;
+    }
+
+    /**
+     * Traces and records the exact ordered list of coordinates from Start to Exit.
+     *
+     * @param maze the maze grid to solve
+     * @return ordered list of coordinates along the solution path, or empty if unsolvable
+     * @throws InvalidRecursionInputException if maze structure is invalid
+     * @throws RecursionLimitExceededException if recursion limit exceeded
+     */
+    public static List<MazeCoordinate> findPath(MazeGrid maze)
+            throws InvalidRecursionInputException, RecursionLimitExceededException {
+        validateMazeStructure(maze);
+        List<MazeCoordinate> path = new ArrayList<>();
+        boolean[][] visited = new boolean[maze.getRows()][maze.getCols()];
+        int[] stepCounter = new int[] {0};
+
+        boolean found = findPathInternal(maze, maze.getStartPos(), visited, path, stepCounter);
+        return found ? path : new ArrayList<>();
+    }
+
+    private static boolean findPathInternal(MazeGrid maze, MazeCoordinate curr, boolean[][] visited,
+                                           List<MazeCoordinate> path, int[] steps)
+            throws RecursionLimitExceededException {
+        steps[0]++;
+        if (steps[0] > MAX_EXPLORATION_STEPS) {
+            throw new RecursionLimitExceededException(steps[0], MAX_EXPLORATION_STEPS, "findPath");
+        }
+
+        visited[curr.getRow()][curr.getCol()] = true;
+        path.add(curr);
+
+        if (curr.equals(maze.getExitPos())) {
+            return true;
+        }
+
+        for (int[] dir : DIRECTIONS) {
+            MazeCoordinate next = curr.offset(dir[0], dir[1]);
+            if (maze.isInBounds(next) && maze.isWalkable(next) && !visited[next.getRow()][next.getCol()]) {
+                if (findPathInternal(maze, next, visited, path, steps)) {
+                    return true;
+                }
+            }
+        }
+
+        // Backtrack: remove step from recorded path
+        path.remove(path.size() - 1);
         return false;
     }
 }
