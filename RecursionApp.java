@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -9,7 +10,7 @@ public class RecursionApp {
         boolean running = true;
         System.out.println("=================================================");
         System.out.println("    RECURSIVE ALGORITHM SUITE & MAZE SOLVER     ");
-        System.out.println("      [MILESTONES 1, 2 & 3 - ALL VERIFIED]       ");
+        System.out.println("         [MILESTONE 4 - COMPLETE HUB]            ");
         System.out.println("=================================================");
 
         while (running) {
@@ -28,13 +29,13 @@ public class RecursionApp {
                     runInteractiveMazeMenu();
                     break;
                 case 4:
-                    runMilestoneOneAutomatedTests();
+                    runInteractiveVisualizerMenu();
                     break;
                 case 5:
-                    runMilestoneTwoAutomatedTests();
+                    runInteractiveBenchmarkMenu();
                     break;
                 case 6:
-                    runMilestoneThreeAutomatedTests();
+                    runAllTestsMenu();
                     break;
                 case 7:
                     running = false;
@@ -54,9 +55,9 @@ public class RecursionApp {
         System.out.println("1. Interactive Recursive Math Calculator");
         System.out.println("2. Interactive Recursive String & Palindrome Engine");
         System.out.println("3. Interactive 2D Maze Recursive Pathfinder");
-        System.out.println("4. Run Milestone 1 Tests (Math Engine)");
-        System.out.println("5. Run Milestone 2 Tests (String Engine)");
-        System.out.println("6. Run Milestone 3 Tests (Maze Pathfinder)");
+        System.out.println("4. Animated Step-by-Step Maze Replay & Analytics");
+        System.out.println("5. Performance Benchmark Hub & Metrics");
+        System.out.println("6. Run Automated Test Suites");
         System.out.println("7. Exit");
         System.out.println("-------------------------------------------------");
     }
@@ -246,6 +247,107 @@ public class RecursionApp {
             }
         } catch (Exception e) {
             System.out.println("[ERROR during maze solving]: " + e.getMessage());
+        }
+    }
+
+    private static void runInteractiveVisualizerMenu() {
+        System.out.println("\n--- ANIMATED MAZE REPLAY & SEARCH ANALYTICS ---");
+        System.out.println("1. Replay 5x5 Sample Maze Exploration");
+        System.out.println("2. Replay 7x7 Complex Labyrinth Backtracking");
+        System.out.println("3. Replay Unsolvable Maze Dead-End Search");
+        System.out.println("4. View Maze Search Analytics & Efficiency");
+        System.out.print("Select operation (1-4): ");
+        int op = readIntChoice();
+
+        try {
+            MazeVisualizer visualizer = new MazeVisualizer();
+            MazeGrid maze;
+            switch (op) {
+                case 1:
+                    maze = MazeGrid.createSampleMaze();
+                    visualizer.recordExploration(maze);
+                    System.out.println("\nReplaying " + visualizer.getFrameCount() + " exploration frames:");
+                    visualizer.playAnimation(0);
+                    break;
+                case 2:
+                    maze = MazeGrid.createChallengingMaze();
+                    visualizer.recordExploration(maze);
+                    System.out.println("\nReplaying " + visualizer.getFrameCount() + " labyrinth frames:");
+                    visualizer.playAnimation(0);
+                    break;
+                case 3:
+                    maze = MazeGrid.createUnsolvableMaze();
+                    visualizer.recordExploration(maze);
+                    System.out.println("\nReplaying " + visualizer.getFrameCount() + " dead-end frames:");
+                    visualizer.playAnimation(0);
+                    break;
+                case 4:
+                    maze = MazeGrid.createSampleMaze();
+                    MazeAnalytics analytics = MazeVisualizer.computeAnalytics(maze);
+                    System.out.println(analytics.renderReport());
+                    break;
+                default:
+                    System.out.println("[ERROR] Invalid choice.");
+            }
+        } catch (Exception e) {
+            System.out.println("[ERROR during visualization]: " + e.getMessage());
+        }
+    }
+
+    private static void runInteractiveBenchmarkMenu() {
+        System.out.println("\n--- RECURSION PERFORMANCE BENCHMARK HUB ---");
+        System.out.println("1. Benchmark Recursive Math Engine");
+        System.out.println("2. Benchmark Recursive String Engine");
+        System.out.println("3. Benchmark 2D Maze Pathfinder");
+        System.out.println("4. Execute Complete Full Suite Benchmark Report");
+        System.out.print("Select operation (1-4): ");
+        int op = readIntChoice();
+
+        switch (op) {
+            case 1:
+                List<BenchmarkResult> mathRes = RecursionBenchmarkHub.benchmarkMathEngine();
+                System.out.println(RecursionBenchmarkHub.formatBenchmarkReport("MATH ENGINE", mathRes));
+                break;
+            case 2:
+                List<BenchmarkResult> strRes = RecursionBenchmarkHub.benchmarkStringEngine();
+                System.out.println(RecursionBenchmarkHub.formatBenchmarkReport("STRING ENGINE", strRes));
+                break;
+            case 3:
+                List<BenchmarkResult> mazeRes = RecursionBenchmarkHub.benchmarkMazeEngine();
+                System.out.println(RecursionBenchmarkHub.formatBenchmarkReport("MAZE PATHFINDER", mazeRes));
+                break;
+            case 4:
+                List<BenchmarkResult> all = new ArrayList<>();
+                all.addAll(RecursionBenchmarkHub.benchmarkMathEngine());
+                all.addAll(RecursionBenchmarkHub.benchmarkStringEngine());
+                all.addAll(RecursionBenchmarkHub.benchmarkMazeEngine());
+                System.out.println(RecursionBenchmarkHub.formatBenchmarkReport("ALL ENGINES MASTER SUITE", all));
+                break;
+            default:
+                System.out.println("[ERROR] Invalid choice.");
+        }
+    }
+
+    private static void runAllTestsMenu() {
+        System.out.println("\n--- AUTOMATED TEST RUNNER ---");
+        System.out.println("1. Milestone 1 (Math Engine)");
+        System.out.println("2. Milestone 2 (String Engine)");
+        System.out.println("3. Milestone 3 (Maze Pathfinder)");
+        System.out.print("Select test to run (1-3): ");
+        int op = readIntChoice();
+
+        switch (op) {
+            case 1:
+                runMilestoneOneAutomatedTests();
+                break;
+            case 2:
+                runMilestoneTwoAutomatedTests();
+                break;
+            case 3:
+                runMilestoneThreeAutomatedTests();
+                break;
+            default:
+                System.out.println("[ERROR] Invalid choice.");
         }
     }
 
@@ -470,7 +572,7 @@ public class RecursionApp {
                 "..E"
             });
             int paths = RecursiveMazeSolver.countAllPaths(forkGrid);
-            boolean pass = (paths >= 2); // 3x3 open grid has multiple valid simple paths
+            boolean pass = (paths >= 2);
             System.out.printf("[Test 5] Recursive All-Paths Counting on 3x3 (found %d paths): -> %s%n",
                     paths, (pass ? "PASS" : "FAIL"));
         } catch (Exception e) {
