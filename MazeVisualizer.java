@@ -145,4 +145,46 @@ public class MazeVisualizer {
         }
         System.out.println("[REPLAY COMPLETE] " + recordedFrames.get(recordedFrames.size() - 1));
     }
+
+    /**
+     * Computes search efficiency metrics on the explored maze.
+     *
+     * @param initialMaze the maze to inspect
+     * @return MazeAnalytics object containing performance metrics
+     */
+    public static MazeAnalytics computeAnalytics(MazeGrid initialMaze) throws Exception {
+        MazeGrid maze = initialMaze.cloneGrid();
+        int totalCells = maze.getRows() * maze.getCols();
+        int walkableCells = 0;
+
+        for (int r = 0; r < maze.getRows(); r++) {
+            for (int c = 0; c < maze.getCols(); c++) {
+                if (maze.getCell(r, c) != MazeGrid.WALL) {
+                    walkableCells++;
+                }
+            }
+        }
+
+        List<MazeCoordinate> solutionPath = RecursiveMazeSolver.findPath(maze);
+        int pathLen = solutionPath.size();
+
+        MazeGrid solvedMaze = initialMaze.cloneGrid();
+        RecursiveMazeSolver.solve(solvedMaze);
+
+        int deadEnds = 0;
+        int activeSteps = 0;
+        for (int r = 0; r < solvedMaze.getRows(); r++) {
+            for (int c = 0; c < solvedMaze.getCols(); c++) {
+                char ch = solvedMaze.getCell(r, c);
+                if (ch == MazeGrid.VISITED) {
+                    deadEnds++;
+                    activeSteps++;
+                } else if (ch == MazeGrid.PATH) {
+                    activeSteps++;
+                }
+            }
+        }
+
+        return new MazeAnalytics(totalCells, walkableCells, (activeSteps + 1), pathLen, deadEnds);
+    }
 }
