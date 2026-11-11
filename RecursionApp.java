@@ -57,7 +57,7 @@ public class RecursionApp {
         System.out.println("3. Interactive 2D Maze Recursive Pathfinder");
         System.out.println("4. Animated Step-by-Step Maze Replay & Analytics");
         System.out.println("5. Performance Benchmark Hub & Metrics");
-        System.out.println("6. Run Automated Test Suites");
+        System.out.println("6. Run Automated Test Suites (Milestones 1-4)");
         System.out.println("7. Exit");
         System.out.println("-------------------------------------------------");
     }
@@ -333,7 +333,8 @@ public class RecursionApp {
         System.out.println("1. Milestone 1 (Math Engine)");
         System.out.println("2. Milestone 2 (String Engine)");
         System.out.println("3. Milestone 3 (Maze Pathfinder)");
-        System.out.print("Select test to run (1-3): ");
+        System.out.println("4. Milestone 4 (Visualizer & Benchmarks)");
+        System.out.print("Select test to run (1-4): ");
         int op = readIntChoice();
 
         switch (op) {
@@ -346,6 +347,9 @@ public class RecursionApp {
             case 3:
                 runMilestoneThreeAutomatedTests();
                 break;
+            case 4:
+                runMilestoneFourAutomatedTests();
+                break;
             default:
                 System.out.println("[ERROR] Invalid choice.");
         }
@@ -356,7 +360,6 @@ public class RecursionApp {
         System.out.println("   MILESTONE 1 AUTOMATED TESTS & VERIFIERS       ");
         System.out.println("=================================================");
 
-        // Test 1: Factorial 5! = 120
         try {
             long res = RecursiveMathEngine.factorial(5);
             System.out.printf("[Test 1] Factorial (5! = 120): %d -> %s%n", res, (res == 120 ? "PASS" : "FAIL"));
@@ -364,7 +367,6 @@ public class RecursionApp {
             System.out.println("[Test 1] FAIL: " + e.getMessage());
         }
 
-        // Test 2: Factorial negative input
         System.out.print("[Test 2] Negative factorial (-5!): ");
         try {
             RecursiveMathEngine.factorial(-5);
@@ -375,7 +377,6 @@ public class RecursionApp {
             System.out.println("FAIL with unexpected: " + e.getMessage());
         }
 
-        // Test 3: Power 2^8 = 256
         try {
             long res = RecursiveMathEngine.power(2, 8);
             System.out.printf("[Test 3] Power (2^8 = 256): %d -> %s%n", res, (res == 256 ? "PASS" : "FAIL"));
@@ -383,11 +384,9 @@ public class RecursionApp {
             System.out.println("[Test 3] FAIL: " + e.getMessage());
         }
 
-        // Test 4: Sum of Digits of 12345 = 15
         int sum = RecursiveMathEngine.sumOfDigits(12345);
         System.out.printf("[Test 4] Sum of Digits (12345 -> 15): %d -> %s%n", sum, (sum == 15 ? "PASS" : "FAIL"));
 
-        // Test 5: Pell Number P(6) = 70
         try {
             long pell6 = RecursiveMathEngine.calculatePell(6);
             System.out.printf("[Test 5] Pell Sequence P(6) = 70: %d -> %s%n", pell6, (pell6 == 70 ? "PASS" : "FAIL"));
@@ -395,7 +394,6 @@ public class RecursionApp {
             System.out.println("[Test 5] FAIL: " + e.getMessage());
         }
 
-        // Test 6: Recursion Limit Safeguard (Pell index > 40)
         System.out.print("[Test 6] Recursion limit guard on Pell P(45): ");
         try {
             RecursiveMathEngine.calculatePell(45);
@@ -416,7 +414,6 @@ public class RecursionApp {
         System.out.println("   MILESTONE 2 AUTOMATED TESTS & VERIFIERS       ");
         System.out.println("=================================================");
 
-        // Test 1: Recursive String Reversal
         try {
             String reversed = RecursiveStringProcessor.reverse("recursion");
             boolean pass = "noisrucer".equals(reversed);
@@ -426,7 +423,6 @@ public class RecursionApp {
             System.out.println("[Test 1] FAIL: " + e.getMessage());
         }
 
-        // Test 2: Palindrome Strict Check
         try {
             boolean p1 = RecursiveStringProcessor.isPalindromeStrict("racecar");
             boolean p2 = RecursiveStringProcessor.isPalindromeStrict("hello");
@@ -437,7 +433,6 @@ public class RecursionApp {
             System.out.println("[Test 2] FAIL: " + e.getMessage());
         }
 
-        // Test 3: Palindrome Normalized Check (Mixed Case & Punctuation)
         try {
             String phrase = "A man, a plan, a canal: Panama";
             boolean pass = RecursiveStringProcessor.isPalindromeNormalized(phrase);
@@ -447,7 +442,6 @@ public class RecursionApp {
             System.out.println("[Test 3] FAIL: " + e.getMessage());
         }
 
-        // Test 4: Recursive Character Count
         try {
             int count = RecursiveStringProcessor.countOccurrences("Object Oriented Programming", 'o', false);
             boolean pass = (count == 3);
@@ -457,7 +451,6 @@ public class RecursionApp {
             System.out.println("[Test 4] FAIL: " + e.getMessage());
         }
 
-        // Test 5: Recursive Vowel Count
         try {
             int vowels = RecursiveStringProcessor.countVowels("Hello World");
             boolean pass = (vowels == 3);
@@ -467,7 +460,6 @@ public class RecursionApp {
             System.out.println("[Test 5] FAIL: " + e.getMessage());
         }
 
-        // Test 6: Recursive Substring Search
         try {
             int idx = RecursiveStringProcessor.indexOf("recursive pattern matching", "pattern");
             boolean pass = (idx == 10);
@@ -477,7 +469,6 @@ public class RecursionApp {
             System.out.println("[Test 6] FAIL: " + e.getMessage());
         }
 
-        // Test 7: Recursive Permutations
         try {
             List<String> perms = RecursiveStringProcessor.generatePermutations("abc");
             boolean pass = (perms.size() == 6 && perms.contains("abc") && perms.contains("cba"));
@@ -487,7 +478,6 @@ public class RecursionApp {
             System.out.println("[Test 7] FAIL: " + e.getMessage());
         }
 
-        // Test 8: Recursive Subsequences
         try {
             List<String> subs = RecursiveStringProcessor.generateSubsequences("xyz");
             boolean pass = (subs.size() == 8 && subs.contains("") && subs.contains("xyz"));
@@ -497,7 +487,6 @@ public class RecursionApp {
             System.out.println("[Test 8] FAIL: " + e.getMessage());
         }
 
-        // Test 9: Stack safeguard on excessive permutation length
         System.out.print("[Test 9] Safeguard on 9-character permutation: ");
         try {
             RecursiveStringProcessor.generatePermutations("123456789");
@@ -518,7 +507,6 @@ public class RecursionApp {
         System.out.println("   MILESTONE 3 AUTOMATED TESTS & VERIFIERS       ");
         System.out.println("=================================================");
 
-        // Test 1: Solvability on Sample 5x5 Maze
         try {
             MazeGrid sample = MazeGrid.createSampleMaze();
             boolean solved = RecursiveMazeSolver.solve(sample);
@@ -528,7 +516,6 @@ public class RecursionApp {
             System.out.println("[Test 1] FAIL: " + e.getMessage());
         }
 
-        // Test 2: Solvability on Challenging 7x7 Labyrinth
         try {
             MazeGrid chal = MazeGrid.createChallengingMaze();
             boolean solved = RecursiveMazeSolver.solve(chal);
@@ -538,7 +525,6 @@ public class RecursionApp {
             System.out.println("[Test 2] FAIL: " + e.getMessage());
         }
 
-        // Test 3: Unsolvable Enclosed Maze Correct Backtracking Failure
         try {
             MazeGrid unsolvable = MazeGrid.createUnsolvableMaze();
             boolean solved = RecursiveMazeSolver.solve(unsolvable);
@@ -549,7 +535,6 @@ public class RecursionApp {
             System.out.println("[Test 3] FAIL: " + e.getMessage());
         }
 
-        // Test 4: Coordinate List Integrity & Start/Exit Anchors
         try {
             MazeGrid sample = MazeGrid.createSampleMaze();
             List<MazeCoordinate> path = RecursiveMazeSolver.findPath(sample);
@@ -564,7 +549,6 @@ public class RecursionApp {
             System.out.println("[Test 4] FAIL: " + e.getMessage());
         }
 
-        // Test 5: Distinct Paths Count on Simple Fork
         try {
             MazeGrid forkGrid = new MazeGrid(new String[] {
                 "S..",
@@ -579,7 +563,6 @@ public class RecursionApp {
             System.out.println("[Test 5] FAIL: " + e.getMessage());
         }
 
-        // Test 6: Missing Start Structure Exception
         System.out.print("[Test 6] Malformed maze exception guard (No Start): ");
         try {
             MazeGrid noStart = new MazeGrid(new String[] {
@@ -596,6 +579,72 @@ public class RecursionApp {
 
         System.out.println("=================================================");
         System.out.println("       MILESTONE 3 VERIFICATION COMPLETED!       ");
+        System.out.println("=================================================");
+    }
+
+    private static void runMilestoneFourAutomatedTests() {
+        System.out.println("\n=================================================");
+        System.out.println("   MILESTONE 4 AUTOMATED TESTS & VERIFIERS       ");
+        System.out.println("=================================================");
+
+        // Test 1: Math benchmark execution
+        try {
+            List<BenchmarkResult> mathRes = RecursionBenchmarkHub.benchmarkMathEngine();
+            boolean pass = (mathRes != null && !mathRes.isEmpty() && mathRes.get(0).getElapsedNanos() >= 0);
+            System.out.printf("[Test 1] Benchmark Math Engine execution (%d ops measured) -> %s%n",
+                    (mathRes == null ? 0 : mathRes.size()), (pass ? "PASS" : "FAIL"));
+        } catch (Exception e) {
+            System.out.println("[Test 1] FAIL: " + e.getMessage());
+        }
+
+        // Test 2: String benchmark execution
+        try {
+            List<BenchmarkResult> strRes = RecursionBenchmarkHub.benchmarkStringEngine();
+            boolean pass = (strRes != null && !strRes.isEmpty());
+            System.out.printf("[Test 2] Benchmark String Engine execution (%d ops measured) -> %s%n",
+                    (strRes == null ? 0 : strRes.size()), (pass ? "PASS" : "FAIL"));
+        } catch (Exception e) {
+            System.out.println("[Test 2] FAIL: " + e.getMessage());
+        }
+
+        // Test 3: Visualizer frame recording
+        try {
+            MazeVisualizer vis = new MazeVisualizer();
+            MazeGrid sample = MazeGrid.createSampleMaze();
+            boolean solved = vis.recordExploration(sample);
+            boolean pass = solved && (vis.getFrameCount() >= 5);
+            System.out.printf("[Test 3] MazeVisualizer frame recording (%d frames captured) -> %s%n",
+                    vis.getFrameCount(), (pass ? "PASS" : "FAIL"));
+        } catch (Exception e) {
+            System.out.println("[Test 3] FAIL: " + e.getMessage());
+        }
+
+        // Test 4: Maze Analytics calculation
+        try {
+            MazeGrid sample = MazeGrid.createSampleMaze();
+            MazeAnalytics analytics = MazeVisualizer.computeAnalytics(sample);
+            boolean pass = (analytics.getTotalCells() == 25)
+                    && (analytics.getPathLength() > 0)
+                    && (analytics.getSearchEfficiencyPercentage() > 0.0);
+            System.out.printf("[Test 4] Maze Analytics computation (Efficiency: %.2f%%) -> %s%n",
+                    analytics.getSearchEfficiencyPercentage(), (pass ? "PASS" : "FAIL"));
+        } catch (Exception e) {
+            System.out.println("[Test 4] FAIL: " + e.getMessage());
+        }
+
+        // Test 5: Benchmark report string rendering
+        try {
+            List<BenchmarkResult> results = RecursionBenchmarkHub.benchmarkMazeEngine();
+            String report = RecursionBenchmarkHub.formatBenchmarkReport("TEST", results);
+            boolean pass = report.contains("BENCHMARK REPORT") && report.contains("MazeSolve5x5");
+            System.out.printf("[Test 5] Benchmark ASCII Table report generator -> %s%n",
+                    (pass ? "PASS" : "FAIL"));
+        } catch (Exception e) {
+            System.out.println("[Test 5] FAIL: " + e.getMessage());
+        }
+
+        System.out.println("=================================================");
+        System.out.println("       MILESTONE 4 VERIFICATION COMPLETED!       ");
         System.out.println("=================================================");
     }
 
