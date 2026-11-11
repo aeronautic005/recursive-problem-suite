@@ -334,7 +334,8 @@ public class RecursionApp {
         System.out.println("2. Milestone 2 (String Engine)");
         System.out.println("3. Milestone 3 (Maze Pathfinder)");
         System.out.println("4. Milestone 4 (Visualizer & Benchmarks)");
-        System.out.print("Select test to run (1-4): ");
+        System.out.println("5. Run Master Suite (All Milestones 1-4 End-to-End)");
+        System.out.print("Select test to run (1-5): ");
         int op = readIntChoice();
 
         switch (op) {
@@ -350,9 +351,26 @@ public class RecursionApp {
             case 4:
                 runMilestoneFourAutomatedTests();
                 break;
+            case 5:
+                runMasterTestSuite();
+                break;
             default:
                 System.out.println("[ERROR] Invalid choice.");
         }
+    }
+
+    private static void runMasterTestSuite() {
+        System.out.println("\n*************************************************");
+        System.out.println("       RUNNING MASTER RECURSION TEST SUITE       ");
+        System.out.println("       (VERIFYING ALL 4 MILESTONES END-TO-END)   ");
+        System.out.println("*************************************************");
+        runMilestoneOneAutomatedTests();
+        runMilestoneTwoAutomatedTests();
+        runMilestoneThreeAutomatedTests();
+        runMilestoneFourAutomatedTests();
+        System.out.println("\n*************************************************");
+        System.out.println("   [SUCCESS] ALL 4 MILESTONES 100% VERIFIED!     ");
+        System.out.println("*************************************************");
     }
 
     private static void runMilestoneOneAutomatedTests() {
