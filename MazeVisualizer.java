@@ -109,4 +109,40 @@ public class MazeVisualizer {
         frame.append(maze.render());
         recordedFrames.add(frame.toString());
     }
+
+    /**
+     * Plays through all recorded animation frames sequentially.
+     *
+     * @param delayMs millisecond pause between frames (0 for instant dump)
+     */
+    public void playAnimation(int delayMs) {
+        for (int i = 0; i < recordedFrames.size(); i++) {
+            System.out.println(recordedFrames.get(i));
+            if (delayMs > 0 && i < recordedFrames.size() - 1) {
+                try {
+                    Thread.sleep(delayMs);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * Prints an abbreviated animation highlight reel showing first, sample intermediate, and final frames.
+     */
+    public void printSummaryReplay() {
+        if (recordedFrames.isEmpty()) {
+            System.out.println("[Notice] No recorded frames to display.");
+            return;
+        }
+
+        System.out.println("[REPLAY START] " + recordedFrames.get(0));
+        if (recordedFrames.size() > 2) {
+            int mid = recordedFrames.size() / 2;
+            System.out.println("[REPLAY MIDPOINT FRAME " + mid + "] " + recordedFrames.get(mid));
+        }
+        System.out.println("[REPLAY COMPLETE] " + recordedFrames.get(recordedFrames.size() - 1));
+    }
 }
