@@ -76,6 +76,117 @@ public class RecursionBenchmarkHub {
     }
 
     /**
+     * Executes benchmarks across recursive string and combinatorial algorithms.
+     *
+     * @return list of benchmark results
+     */
+    public static List<BenchmarkResult> benchmarkStringEngine() {
+        List<BenchmarkResult> results = new ArrayList<>();
+
+        // String Reversal Scaling
+        int[] reverseLengths = {10, 100, 500};
+        for (int len : reverseLengths) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < len; i++) sb.append((char) ('a' + (i % 26)));
+            String testStr = sb.toString();
+
+            long start = System.nanoTime();
+            try {
+                String rev = RecursiveStringProcessor.reverse(testStr);
+                long elapsed = System.nanoTime() - start;
+                results.add(new BenchmarkResult("ReverseString", "len=" + len, elapsed, len, "Length " + rev.length()));
+            } catch (Exception e) {
+                results.add(new BenchmarkResult("ReverseString", "len=" + len, 0, 0, "ERROR"));
+            }
+        }
+
+        // Palindrome Verification
+        String[] palTests = {"racecar", "A man, a plan, a canal: Panama"};
+        for (String p : palTests) {
+            long start = System.nanoTime();
+            try {
+                boolean isPal = RecursiveStringProcessor.isPalindromeNormalized(p);
+                long elapsed = System.nanoTime() - start;
+                results.add(new BenchmarkResult("PalindromeNorm", "len=" + p.length(), elapsed, p.length(), String.valueOf(isPal)));
+            } catch (Exception e) {
+                results.add(new BenchmarkResult("PalindromeNorm", "len=" + p.length(), 0, 0, "ERROR"));
+            }
+        }
+
+        // Permutations Benchmark (Factorial scaling)
+        String[] permInputs = {"ABC", "ABCDE", "ABCDEFG"};
+        for (String s : permInputs) {
+            long start = System.nanoTime();
+            try {
+                List<String> perms = RecursiveStringProcessor.generatePermutations(s);
+                long elapsed = System.nanoTime() - start;
+                results.add(new BenchmarkResult("Permutations", "n=" + s.length(), elapsed, perms.size(), perms.size() + " perms"));
+            } catch (Exception e) {
+                results.add(new BenchmarkResult("Permutations", "n=" + s.length(), 0, 0, "ERROR"));
+            }
+        }
+
+        // Subsequences Benchmark (2^n exponential scaling)
+        String[] subInputs = {"ABCD", "ABCDEFGH", "ABCDEFGHIJKL"};
+        for (String s : subInputs) {
+            long start = System.nanoTime();
+            try {
+                List<String> subs = RecursiveStringProcessor.generateSubsequences(s);
+                long elapsed = System.nanoTime() - start;
+                results.add(new BenchmarkResult("Subsequences", "n=" + s.length(), elapsed, subs.size(), subs.size() + " subs"));
+            } catch (Exception e) {
+                results.add(new BenchmarkResult("Subsequences", "n=" + s.length(), 0, 0, "ERROR"));
+            }
+        }
+
+        return results;
+    }
+
+    /**
+     * Executes benchmarks across 2D Maze backtracking pathfinding.
+     *
+     * @return list of benchmark results
+     */
+    public static List<BenchmarkResult> benchmarkMazeEngine() {
+        List<BenchmarkResult> results = new ArrayList<>();
+
+        // Sample 5x5 Maze
+        MazeGrid sample = MazeGrid.createSampleMaze();
+        long startSample = System.nanoTime();
+        try {
+            boolean solved = RecursiveMazeSolver.solve(sample);
+            long elapsed = System.nanoTime() - startSample;
+            results.add(new BenchmarkResult("MazeSolve5x5", "5x5 Grid", elapsed, 25, "Solved=" + solved));
+        } catch (Exception e) {
+            results.add(new BenchmarkResult("MazeSolve5x5", "5x5 Grid", 0, 0, "ERROR"));
+        }
+
+        // Challenging 7x7 Labyrinth
+        MazeGrid chal = MazeGrid.createChallengingMaze();
+        long startChal = System.nanoTime();
+        try {
+            boolean solved = RecursiveMazeSolver.solve(chal);
+            long elapsed = System.nanoTime() - startChal;
+            results.add(new BenchmarkResult("MazeSolve7x7", "7x7 Labyrinth", elapsed, 49, "Solved=" + solved));
+        } catch (Exception e) {
+            results.add(new BenchmarkResult("MazeSolve7x7", "7x7 Labyrinth", 0, 0, "ERROR"));
+        }
+
+        // Unsolvable Exhaustion
+        MazeGrid unsolve = MazeGrid.createUnsolvableMaze();
+        long startUnsolve = System.nanoTime();
+        try {
+            boolean solved = RecursiveMazeSolver.solve(unsolve);
+            long elapsed = System.nanoTime() - startUnsolve;
+            results.add(new BenchmarkResult("MazeUnsolvable", "5x5 Blocked", elapsed, 25, "Solved=" + solved));
+        } catch (Exception e) {
+            results.add(new BenchmarkResult("MazeUnsolvable", "5x5 Blocked", 0, 0, "ERROR"));
+        }
+
+        return results;
+    }
+
+    /**
      * Formats benchmark metrics into an ASCII table report.
      *
      * @param results collection of benchmark measurements
